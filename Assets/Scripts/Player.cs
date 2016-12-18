@@ -21,8 +21,7 @@
  */
 
 using UnityEngine;
-using System.Collections;
-using System;
+using UnityEngine.Networking;
 
 public class Player : MonoBehaviour {
     //Manager
@@ -82,7 +81,7 @@ public class Player : MonoBehaviour {
         if (Input.GetKey(KeyCode.W)) { //Up movement
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, rigidBody.velocity.y, moveSpeed);
             myTransform.rotation = Quaternion.Euler(0, 0, 0);
-            animator.SetBool("Walking",true);
+            animator.SetBool("Walking", true);
         }
 
         if (Input.GetKey(KeyCode.A)) { //Left movement
