@@ -1,4 +1,4 @@
-5.5.0f3:2.8.0.0
+5.5.0f3:2.1.0.0
 StandaloneWindows
 D:/Programme/Unity/Editor/Data/Managed/UnityEngine.dll
 D:/Programme/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
@@ -19,6 +19,5 @@ D:/Programme/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/Editor/Unity
 D:/Programme/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/Editor/UnityEditor.HoloLens.dll
 D:/Programme/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll
 D:/Programme/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll
-D:/Programme/Unity/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
 D:/Programme/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
 C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/2015/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll

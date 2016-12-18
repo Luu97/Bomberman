@@ -1,56 +1,44 @@
-﻿/*
- * Copyright (c) 2015 Razeware LLC
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
-public class GlobalStateManager : MonoBehaviour {
-    public List<GameObject> Players = new List<GameObject>();
+public class GlobalStateManager : NetworkBehaviour {
 
-    private int deadPlayers = 0;
-    private int deadPlayerNumber = -1;
+    private const string PLAYER_ID_PREFIX = "Player ";
 
-    public void PlayerDied(int playerNumber) {
-        deadPlayers++;
+    private static Dictionary<string, Player> players = new Dictionary<string, Player>();
+    private List<Player> alivePlayers = new List<Player>();
 
-        if (deadPlayers == 1) {
-            deadPlayerNumber = playerNumber;
-            Invoke("CheckPlayersDeath", .3f);
-        }
+    public static void RegisterPlayer (string _netID, Player _player) {
+        string _playerID = PLAYER_ID_PREFIX + _netID;
+        players.Add(_playerID, _player);
+        _player.transform.name = _playerID;
     }
 
-    void CheckPlayersDeath() {
-        if (deadPlayers == 1) { //Single dead player, he's the winner
+    public static void UnRegisterPlayer (string _playerID) {
+        players.Remove(_playerID);
+    }
 
-            if (deadPlayerNumber == 1) { //P1 dead, P2 is the winner
-                Debug.Log("Player 2 is the winner!");
-            }
-            else { //P2 dead, P1 is the winner
-                Debug.Log("Player 1 is the winner!");
-            }
+    public static Player GetPlayer (string _playerID) {
+        return players[_playerID];
+    }
+
+    public static List<Player> GetAllPlayers () {
+        List<Player> allPlayers = new List<Player>();
+        foreach (string playerKey in players.Keys) {
+            allPlayers.Add(players[playerKey]);
         }
-        else {  //Multiple dead players, it's a draw
-            Debug.Log("The game ended in a draw!");
+        return allPlayers;
+    }
+
+    public static List<Player> GetAlivePlayers () {
+        List<Player> alivePlayers = new List<Player>();
+        foreach (string playerKey in players.Keys) {
+            if (!players[playerKey].Dead) {
+                alivePlayers.Add(players[playerKey]);
+            }
+            
         }
+        return alivePlayers;
     }
 }
