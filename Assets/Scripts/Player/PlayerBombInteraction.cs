@@ -60,12 +60,19 @@ public class PlayerBombInteraction : NetworkBehaviour {
         }
     }
 
-    [Client]
     public void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Explosion")) { //Not dead & hit by explosion
-            GetComponent<Player>().Dead = true;
-            CmdPlayerDied(transform.name);
+        if (other.CompareTag("Explosion")) { //hit by explosion
+            foreach (Player player in GlobalStateManager.GetAlivePlayers()) {
+                if (player == GetComponent<Player>()) {
+                    GetComponent<Player>().Die();
+                    Invoke("TellServer", 0.3f);
+                }
+            }
         }
+    }
+
+    void TellServer() {
+        CmdPlayerDied(transform.name);
     }
 
     [Command]
@@ -74,18 +81,16 @@ public class PlayerBombInteraction : NetworkBehaviour {
         List<Player> alivePlayers = GlobalStateManager.GetAlivePlayers();
         if (alivePlayers.Count == 0) {
             Debug.Log("Game ended in a Draw");
-            //RpcRespawn(null);
+            RpcRespawn();
         }
         else if (alivePlayers.Count == 1) {
             Debug.Log(alivePlayers[0].transform.name + " won the game!");
-            //RpcRespawn(alivePlayers[0].transform.name);
+            RpcRespawn();
         }
     }
 
     [ClientRpc]
-    void RpcRespawn(string playerID) {
-        if (playerID != null)
-            GlobalStateManager.GetPlayer(playerID).Dead = true;
+    void RpcRespawn() {
         List<Player> allPlayers = GlobalStateManager.GetAllPlayers();
         foreach (Player player in allPlayers) {
             player.Respawn();

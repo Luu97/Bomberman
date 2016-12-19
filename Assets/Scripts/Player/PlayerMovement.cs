@@ -63,5 +63,6 @@ public class PlayerMovement : MonoBehaviour {
             myTransform.rotation = Quaternion.Euler(0, 90, 0);
             animator.SetBool("Walking", true);
         }
+
     }
 }

@@ -13,24 +13,12 @@ public class Player : NetworkBehaviour {
     private bool dead = false;
     public bool Dead {
         get { return dead; }
-        set {
+        protected set {
             dead = value;
-            if (value == true) {
-                Die();
-            }
         }
     }
 
-    [SerializeField]
-    private Behaviour[] disableOnDeath;
-    private bool[] wasEnabled;
-
-    public void Setup () {
-        wasEnabled = new bool[disableOnDeath.Length];
-        for (int i = 0; i < wasEnabled.Length; i++) {
-            wasEnabled[i] = disableOnDeath[i].enabled;
-        }
-
+    public void Setup() {
         SetDefaults();
     }
 
@@ -41,27 +29,19 @@ public class Player : NetworkBehaviour {
         MoveSpeed = 5f;
         Dead = false;
 
-        for (int i = 0; i < disableOnDeath.Length; i++) {
-            disableOnDeath[i].enabled = wasEnabled[i];
-        }
-
         Collider _col = GetComponent<Collider>();
         if (_col != null)
             _col.enabled = true;
     }
 
-    void Die() {
+    public void Die() {
         transform.position = new Vector3(0, -50, 0);
-
-        for (int i = 0; i < disableOnDeath.Length; i++) {
-            disableOnDeath[i].enabled = false;
-        }
 
         Collider _col = GetComponent<Collider>();
         if (_col != null)
             _col.enabled = false;
 
-        Respawn();
+        Dead = true;
     }
 
     public void Respawn() {
