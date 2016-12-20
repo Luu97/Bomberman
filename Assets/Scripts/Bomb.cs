@@ -1,33 +1,11 @@
-﻿/*
- * Copyright (c) 2015 Razeware LLC
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using UnityEngine.Networking;
 
-public class Bomb : MonoBehaviour {
+public class Bomb : NetworkBehaviour {
     public AudioClip explosionSound;
-    public GameObject explosionPrefab; 
+    public GameObject explosionPrefab;
     public LayerMask levelMask; // This LayerMask makes sure the rays cast to check for free spaces only hits the blocks in the level
     private bool exploded = false;
 
@@ -38,7 +16,9 @@ public class Bomb : MonoBehaviour {
 
     void Explode() {
         //Explosion sound
-        AudioSource.PlayClipAtPoint(explosionSound,transform.position);
+        AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+
+        
 
         //Create a first explosion at the bomb position
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
@@ -50,9 +30,27 @@ public class Bomb : MonoBehaviour {
         StartCoroutine(CreateExplosions(Vector3.left));
 
         GetComponent<MeshRenderer>().enabled = false; //Disable mesh
-        exploded = true; 
-        transform.FindChild("Collider").gameObject.SetActive(false); //Disable the collider
-        Destroy(gameObject,.3f); //Destroy the actual bomb in 0.3 seconds, after all coroutines have finished
+        exploded = true;
+        transform.FindChild("Collider").gameObject.SetActive(false); //Disable the trigger
+        Destroy(gameObject, .3f); //Destroy the actual bomb in 0.3 seconds, after all coroutines have finished
+    }
+
+    void OnDestroy() {
+        foreach (Player player in PlayerManager.GetAllPlayers()) {
+            player.UpdateBombCount();
+        }
+        /*if (transform.name.Contains("(1)")) {
+            PlayerManager.GetPlayer(1).UpdateBombCount();
+        }
+        if (transform.name.Contains("(2)")) {
+            PlayerManager.GetPlayer(2).UpdateBombCount();
+        }
+        if (transform.name.Contains("(3)")) {
+            PlayerManager.GetPlayer(3).UpdateBombCount();
+        }
+        if (transform.name.Contains("(4)")) {
+            PlayerManager.GetPlayer(4).UpdateBombCount();
+        }*/
     }
 
     public void OnTriggerEnter(Collider other) {
@@ -66,7 +64,7 @@ public class Bomb : MonoBehaviour {
         for (int i = 1; i < 3; i++) { //The 3 here dictates how far the raycasts will check, in this case 3 tiles far
             RaycastHit hit; //Holds all information about what the raycast hits
 
-            Physics.Raycast(transform.position + new Vector3(0,.5f,0), direction, out hit, i, levelMask); //Raycast in the specified direction at i distance, because of the layer mask it'll only hit blocks, not players or bombs
+            Physics.Raycast(transform.position + new Vector3(0, .5f, 0), direction, out hit, i, levelMask); //Raycast in the specified direction at i distance, because of the layer mask it'll only hit blocks, not players or bombs
 
             if (!hit.collider) { // Free space, make a new explosion
                 Instantiate(explosionPrefab, transform.position + (i * direction), explosionPrefab.transform.rotation);

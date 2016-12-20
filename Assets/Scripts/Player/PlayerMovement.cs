@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(Player))]
 public class PlayerMovement : MonoBehaviour {
@@ -7,8 +8,8 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody rigidBody;
     private Transform myTransform;
     private Animator animator;
-    private bool canMove;
     private float moveSpeed;
+    private float rotationY;
 
     // Use this for initialization
     void Start() {
@@ -16,7 +17,6 @@ public class PlayerMovement : MonoBehaviour {
         rigidBody = GetComponent<Rigidbody>();
         myTransform = transform;
         animator = myTransform.FindChild("PlayerModel").GetComponent<Animator>();
-        canMove = GetComponent<Player>().CanMove;
         moveSpeed = GetComponent<Player>().MoveSpeed;
 
     }
@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour {
     private void UpdateMovement() {
         animator.SetBool("Walking", false); //Resets walking animation to idle
 
-        if (!canMove) { //Return if player can't move
+        if (!GetComponent<Player>().CanMove) { //Return if player can't move
             return;
         }
 
@@ -40,29 +40,17 @@ public class PlayerMovement : MonoBehaviour {
     /// Updates Player 1's movement and facing rotation using the WASD keys and drops bombs using Space
     /// </summary>
     private void UpdatePlayerMovement() {
-        if (Input.GetKey(KeyCode.W)) { //Up movement
-            rigidBody.velocity = new Vector3(rigidBody.velocity.x, rigidBody.velocity.y, moveSpeed);
-            myTransform.rotation = Quaternion.Euler(0, 0, 0);
-            animator.SetBool("Walking", true);
-        }
 
-        if (Input.GetKey(KeyCode.A)) { //Left movement
-            rigidBody.velocity = new Vector3(-moveSpeed, rigidBody.velocity.y, rigidBody.velocity.z);
-            myTransform.rotation = Quaternion.Euler(0, 270, 0);
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
             animator.SetBool("Walking", true);
-        }
+            rigidBody.velocity = new Vector3(moveSpeed * Input.GetAxis("Horizontal"), rigidBody.velocity.y, moveSpeed * Input.GetAxis("Vertical"));
+            myTransform.rotation = Quaternion.LookRotation(rigidBody.velocity);
 
-        if (Input.GetKey(KeyCode.S)) { //Down movement
-            rigidBody.velocity = new Vector3(rigidBody.velocity.x, rigidBody.velocity.y, -moveSpeed);
-            myTransform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else if (CrossPlatformInputManager.GetAxis("Horizontal") != 0 || CrossPlatformInputManager.GetAxis("Vertical") != 0) {
             animator.SetBool("Walking", true);
+            rigidBody.velocity = new Vector3(moveSpeed * CrossPlatformInputManager.GetAxis("Horizontal"), rigidBody.velocity.y, moveSpeed * CrossPlatformInputManager.GetAxis("Vertical"));
+            myTransform.rotation = Quaternion.LookRotation(rigidBody.velocity);
         }
-
-        if (Input.GetKey(KeyCode.D)) { //Right movement
-            rigidBody.velocity = new Vector3(moveSpeed, rigidBody.velocity.y, rigidBody.velocity.z);
-            myTransform.rotation = Quaternion.Euler(0, 90, 0);
-            animator.SetBool("Walking", true);
-        }
-
     }
 }
