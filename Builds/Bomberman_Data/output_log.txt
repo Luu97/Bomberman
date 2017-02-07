@@ -5,7 +5,7 @@ Direct3D:
     Renderer: NVIDIA GeForce GTX 970 (ID=0x13c2)
     Vendor:   NVIDIA
     VRAM:     3072 MB
-    Driver:   21.21.13.6909
+    Driver:   21.21.13.7849
 Begin MonoManager ReloadAssembly
 Platform assembly: D:\Eigene Dateien\Projects\Unity\Bomberman\Builds\Bomberman_Data\Managed\UnityEngine.dll (this message is harmless)
 Loading D:\Eigene Dateien\Projects\Unity\Bomberman\Builds\Bomberman_Data\Managed\UnityEngine.dll into Unity Child Domain
@@ -19,33 +19,48 @@ Platform assembly: D:\Eigene Dateien\Projects\Unity\Bomberman\Builds\Bomberman_D
 Loading D:\Eigene Dateien\Projects\Unity\Bomberman\Builds\Bomberman_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\Eigene Dateien\Projects\Unity\Bomberman\Builds\Bomberman_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
 Loading D:\Eigene Dateien\Projects\Unity\Bomberman\Builds\Bomberman_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.054 seconds
+- Completed reload, in  0.069 seconds
 Platform assembly: D:\Eigene Dateien\Projects\Unity\Bomberman\Builds\Bomberman_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Eigene Dateien\Projects\Unity\Bomberman\Builds\Bomberman_Data\Managed\System.dll (this message is harmless)
 <RI> Initializing input.
 <RI> Input initialized.
 desktop: 1920x1080 60Hz; virtual: 3840x1080 at 0,0
 <RI> Initialized touch support.
-The referenced script on this Behaviour (Game Object 'GameManager') is missing!
+UnloadTime: 1.729313 ms
+MatchMakingClient ListMatches :https://mm.unet.unity3d.com/json/reply/ListMatchRequest
  
-(Filename:  Line: 1754)
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-UnloadTime: 1.530371 ms
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 2668 -> priority: 1 
+  Thread -> id: 3b4c -> priority: 1 
+Creating Room: test with room for 4 players.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+MatchMakingClient Create :https://mm.unet.unity3d.com/json/reply/CreateMatchRequest
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
 The prefab 'Player 1' has multiple NetworkIdentity components. There can only be one NetworkIdentity on a prefab, and it must be on the root object.
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Player 2 just died! (1)
+UnloadTime: 4.974433 ms
+The prefab 'Player 1' has multiple NetworkIdentity components. There can only be one NetworkIdentity on a prefab, and it must be on the root object.
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Player 2 just died! (2)
+
+Unloading 22 unused Assets to reduce memory usage. Loaded Objects now: 1121.
+Total: 0.669063 ms (FindLiveObjects: 0.077771 ms CreateObjectMapping: 0.037574 ms MarkObjects: 0.532454 ms  DeleteObjects: 0.020389 ms)
+
+Log: connection {1} has been disconnected by timeout; address {::ffff:52.29.208.212:9999}
+Empty player list given to NetworkServer.Destroy(), nothing to do.
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Player 1 just died! (1)
+ServerDisconnected due to error: Timeout
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
